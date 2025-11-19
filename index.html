@@ -1,338 +1,49 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Mint - Hikayeni NFT Yap</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Press Start 2P', cursive;
-            background: #000080;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px);
-            color: #00ff00;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #000;
-            border: 4px solid #00ff00;
-            box-shadow: 0 0 20px #00ff00, inset 0 0 20px rgba(0,255,0,0.1);
-            padding: 20px;
-            position: relative;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: blink 2s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0.7; }
-        }
-        
-        h1 {
-            font-size: 24px;
-            color: #ff00ff;
-            text-shadow: 2px 2px #00ffff;
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-        
-        .subtitle {
-            font-size: 10px;
-            color: #ffff00;
-            margin-top: 15px;
-        }
-        
-        .wallet-info {
-            background: #1a1a1a;
-            border: 2px solid #00ffff;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 10px;
-            color: #00ffff;
-        }
-        
-        .story-section {
-            margin-bottom: 30px;
-        }
-        
-        .label {
-            display: block;
-            color: #ffff00;
-            margin-bottom: 10px;
-            font-size: 12px;
-        }
-        
-        textarea {
-            width: 100%;
-            min-height: 200px;
-            background: #1a1a1a;
-            border: 3px solid #00ff00;
-            color: #00ff00;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            padding: 15px;
-            resize: vertical;
-            line-height: 1.8;
-        }
-        
-        textarea:focus {
-            outline: none;
-            box-shadow: 0 0 15px #00ff00;
-        }
-        
-        .char-counter {
-            text-align: right;
-            color: #ffff00;
-            font-size: 10px;
-            margin-top: 5px;
-        }
-        
-        .char-counter.warning {
-            color: #ff0000;
-            animation: pulse 0.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
-            padding: 15px 25px;
-            background: #ff00ff;
-            color: #000;
-            border: 3px solid #ffff00;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 150px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        button:hover {
-            background: #ffff00;
-            color: #000;
-            box-shadow: 0 0 20px #ffff00;
-            transform: scale(1.05);
-        }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        button:disabled {
-            background: #666;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-        
-        .tip-section {
-            background: #1a1a1a;
-            border: 3px solid #ff00ff;
-            padding: 20px;
-            margin-top: 30px;
-            text-align: center;
-        }
-        
-        .tip-title {
-            color: #ff00ff;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        
-        .wallet-display {
-            background: #000;
-            border: 2px solid #00ffff;
-            padding: 15px;
-            margin: 15px 0;
-            word-break: break-all;
-            color: #00ffff;
-            font-size: 9px;
-            line-height: 1.5;
-        }
-        
-        .tip-button {
-            background: #00ff00;
-            border-color: #ffff00;
-            width: 100%;
-        }
-        
-        .tip-button:hover {
-            background: #ffff00;
-            box-shadow: 0 0 20px #00ff00;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: #000;
-            border: 4px solid #00ff00;
-            padding: 30px;
-            max-width: 500px;
-            text-align: center;
-            box-shadow: 0 0 30px #00ff00;
-        }
-        
-        .modal-content h2 {
-            color: #ff00ff;
-            font-size: 16px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        .modal-content p {
-            color: #00ffff;
-            font-size: 10px;
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        
-        .close-modal {
-            background: #ff0000;
-            border-color: #ffff00;
-            width: 100%;
-        }
-        
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .star {
-            position: absolute;
-            background: #fff;
-            width: 2px;
-            height: 2px;
-            animation: twinkle 3s infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            color: #ffff00;
-            font-size: 10px;
-            margin: 10px 0;
-        }
-        
-        .loading.active {
-            display: block;
-        }
-        
-        @media (max-width: 600px) {
-            h1 { font-size: 16px; }
-            .subtitle { font-size: 8px; }
-            button { font-size: 9px; padding: 12px 15px; min-width: 120px; }
-            .wallet-display { font-size: 8px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="container">
-        <div class="header">
-            <h1>⭐ STORY MINT ⭐</h1>
-            <div class="subtitle">>>> Hikayeni Yaz, NFT Yap, Ebedileştir <<<</div>
-        </div>
-        
-        <div class="wallet-info" id="walletInfo">
-            <div>[ CÜZDAN DURUMU ]</div>
-            <div id="walletStatus" style="margin-top: 10px;">Bağlanıyor...</div>
-        </div>
-        
-        <div class="story-section">
-            <label class="label">[ HİKAYENİ YAZ ]</label>
-            <textarea 
-                id="storyText" 
-                placeholder="Başarı hikayeni, anın, düşüncen... Ne olursa olsun, buraya yaz ve ebedileştir!"
-                maxlength="500"
-            ></textarea>
-            <div class="char-counter" id="charCounter">0 / 500 karakter</div>
-        </div>
-        
-        <div class="button-group">
-            <button id="saveBtn">💾 KAYDET</button>
-            <button id="mintBtn">🎨 NFT MINT</button>
-        </div>
-        
-        <div class="loading" id="loading">
-            ⏳ İşlem yapılıyor...
-        </div>
-        
-        <div class="tip-section">
-            <div class="tip-title">💰 TİP VER 💰</div>
-            <p style="color: #00ff00; font-size: 9px; margin-bottom: 15px;">
-                Bu uygulamayı beğendiniz mi? Geliştiriciyi destekleyin!
-            </p>
-            <div class="wallet-display">
-                0xc3d02D56A4f4B4fa549cb2C9Ee621B275Bd23ae4
-            </div>
-            <button class="tip-button" id="tipBtn">📋 CÜZDAN ADRESINI KOPYALA</button>
-        </div>
-    </div>
-    
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <h2>✨ BAŞARILI ✨</h2>
-            <p id="modalMessage"></p>
-            <button class="close-modal" id="closeModal">TAMAM</button>
-        </div>
-    </div>
-
+<script src="https://sdk.farcaster.xyz/v1/farcaster.js"></script>
     <script>
+        // Farcaster SDK başlatma
+        let sdk;
+        
+        // SDK'yı başlat ve ready durumunu bildir
+        async function initFarcasterSDK() {
+            try {
+                sdk = new window.Farcaster.SDK();
+                
+                // Context bilgilerini al
+                const context = await sdk.context;
+                console.log('Farcaster Context:', context);
+                
+                // SDK'nın hazır olduğunu bildir - ÖNEMLİ!
+                sdk.actions.ready();
+                
+                // Kullanıcı bilgilerini göster
+                if (context.user) {
+                    walletStatus.innerHTML = `✅ Farcaster: @${context.user.username || context.user.fid}`;
+                    walletConnected = true;
+                    walletAddress = context.user.fid;
+                } else {
+                    walletStatus.innerHTML = '⚠️ Kullanıcı bilgisi alınamadı';
+                }
+            } catch (error) {
+                console.error('Farcaster SDK hatası:', error);
+                // SDK yoksa normal cüzdan bağlantısı dene
+                connectWallet();
+            }
+        }
+        
+        // Sayfa yüklendiğinde SDK'yı başlat
+        if (typeof window.Farcaster !== 'undefined') {
+            initFarcasterSDK();
+        } else {
+            // SDK yüklenene kadar bekle
+            window.addEventListener('load', () => {
+                if (typeof window.Farcaster !== 'undefined') {
+                    initFarcasterSDK();
+                } else {
+                    connectWallet();
+                }
+            });
+        }
+        
         // Yıldız efekti
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 50; i++) {
@@ -360,128 +71,5 @@
         let walletConnected = false;
         let walletAddress = '';
         
-        // Farcaster SDK entegrasyonu için hazır
+        // Normal cüzdan bağlantısı (SDK yoksa)
         async function connectWallet() {
-            try {
-                if (typeof window.ethereum !== 'undefined') {
-                    const accounts = await window.ethereum.request({ 
-                        method: 'eth_requestAccounts' 
-                    });
-                    walletAddress = accounts[0];
-                    walletConnected = true;
-                    walletStatus.innerHTML = `✅ Bağlı: ${walletAddress.substring(0, 6)}...${walletAddress.substring(38)}`;
-                } else {
-                    walletStatus.innerHTML = '⚠️ Cüzdan algılanamadı. Demo modunda devam ediliyor.';
-                    walletAddress = 'Demo Mode';
-                    walletConnected = true;
-                }
-            } catch (error) {
-                console.error('Wallet bağlantı hatası:', error);
-                walletStatus.innerHTML = '⚠️ Demo modunda çalışıyor';
-                walletAddress = 'Demo Mode';
-                walletConnected = true;
-            }
-        }
-        
-        connectWallet();
-        
-        // Karakter sayacı
-        storyText.addEventListener('input', () => {
-            const length = storyText.value.length;
-            charCounter.textContent = `${length} / 500 karakter`;
-            
-            if (length > 450) {
-                charCounter.classList.add('warning');
-            } else {
-                charCounter.classList.remove('warning');
-            }
-        });
-        
-        // Kaydet butonu
-        saveBtn.addEventListener('click', () => {
-            const story = storyText.value.trim();
-            
-            if (!story) {
-                showModal('❌ HATA', 'Lütfen bir hikaye yazın!');
-                return;
-            }
-            
-            loading.classList.add('active');
-            
-            setTimeout(() => {
-                const stories = JSON.parse(localStorage.getItem('stories') || '[]');
-                stories.push({
-                    text: story,
-                    timestamp: new Date().toISOString(),
-                    wallet: walletAddress
-                });
-                localStorage.setItem('stories', JSON.stringify(stories));
-                
-                loading.classList.remove('active');
-                showModal('💾 KAYDEDILDI', 'Hikayen başarıyla kaydedildi!');
-                storyText.value = '';
-                charCounter.textContent = '0 / 500 karakter';
-            }, 1500);
-        });
-        
-        // NFT Mint butonu
-        mintBtn.addEventListener('click', () => {
-            const story = storyText.value.trim();
-            
-            if (!story) {
-                showModal('❌ HATA', 'Lütfen bir hikaye yazın!');
-                return;
-            }
-            
-            if (!walletConnected) {
-                showModal('⚠️ UYARI', 'Lütfen önce cüzdanınızı bağlayın!');
-                return;
-            }
-            
-            loading.classList.add('active');
-            
-            // Gerçek NFT mint işlemi için Base/Ethereum entegrasyonu gerekli
-            setTimeout(() => {
-                loading.classList.remove('active');
-                showModal(
-                    '🎨 MINT İŞLEMİ', 
-                    'NFT mint işlemi başlatıldı! Bu özellik için smart contract entegrasyonu gereklidir. Demo modunda çalışıyorsunuz.'
-                );
-            }, 2000);
-        });
-        
-        // Tip butonu - Cüzdan adresini kopyala
-        tipBtn.addEventListener('click', () => {
-            const walletAddress = '0xc3d02D56A4f4B4fa549cb2C9Ee621B275Bd23ae4';
-            
-            navigator.clipboard.writeText(walletAddress).then(() => {
-                tipBtn.textContent = '✅ KOPYALANDI!';
-                tipBtn.style.background = '#00ff00';
-                
-                setTimeout(() => {
-                    tipBtn.textContent = '📋 CÜZDAN ADRESINI KOPYALA';
-                    tipBtn.style.background = '#00ff00';
-                }, 2000);
-            }).catch(err => {
-                showModal('❌ HATA', 'Kopyalama başarısız. Lütfen manuel olarak kopyalayın.');
-            });
-        });
-        
-        // Modal fonksiyonları
-        function showModal(title, message) {
-            modalMessage.innerHTML = `<strong>${title}</strong><br><br>${message}`;
-            successModal.classList.add('active');
-        }
-        
-        closeModal.addEventListener('click', () => {
-            successModal.classList.remove('active');
-        });
-        
-        successModal.addEventListener('click', (e) => {
-            if (e.target === successModal) {
-                successModal.classList.remove('active');
-            }
-        });
-    </script>
-</body>
-</html>
